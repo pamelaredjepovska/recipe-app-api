@@ -10,5 +10,6 @@ services:
       - "5000:5000"
     volumes:
       - ./app:/app
+    working_dir: /app
     command: >
       sh -c "python manage.py runserver 0.0.0.0:5000"
