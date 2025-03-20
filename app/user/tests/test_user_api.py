@@ -9,10 +9,12 @@ from rest_framework.test import APIClient
 
 CREATE_USER_URL = reverse('user:create')
 
+
 def create_user(**params):
     """Create and return a new user."""
 
     return get_user_model().objects.create_user(**params)
+
 
 class PublicUserApiTests(TestCase):
     """Test the public features of the user API."""
@@ -47,10 +49,16 @@ class PublicUserApiTests(TestCase):
         create_user(**payload)
         res = self.client.post(CREATE_USER_URL, payload)
 
-        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            res.status_code,
+            status.HTTP_400_BAD_REQUEST
+        )
 
     def test_password_too_short_error(self):
-        """Test error is returned if password length is less than 5 characters."""
+        """
+        Test error is returned if password length
+        is less than 5 characters.
+        """
 
         payload = {
             'email': 'test@example.com',
@@ -61,5 +69,6 @@ class PublicUserApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         # Check if the user doesn't really exist
-        user_exists = get_user_model().objects.filter(email=payload['email']).exists()
+        user_exists = get_user_model().objects.filter(
+            email=payload['email']).exists()
         self.assertFalse(user_exists)
