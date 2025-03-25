@@ -5,6 +5,7 @@ Serializers for the user API view.
 from django.contrib.auth import authenticate, get_user_model
 from django.utils.translation import gettext as _
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,6 +22,21 @@ class UserSerializer(serializers.ModelSerializer):
         """Create and return an user with an encrypted password."""
 
         return get_user_model().objects.create_user(**validated_data)
+
+    def update(self, instance, validated_data):
+        """Update and return user."""
+
+        password = validated_data.pop('password', None)
+        user = super().update(instance, validated_data)
+
+        if password:
+            user.set_password(password)
+            user.save()
+
+            # Invalidate the existing token(s) by deleting them
+            Token.objects.filter(user=user).delete()
+
+        return user
 
 
 class AuthTokenSerializer(serializers.Serializer):
