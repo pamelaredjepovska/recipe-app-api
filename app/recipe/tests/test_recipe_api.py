@@ -408,7 +408,7 @@ class PrivatecRecipeAPITests(TestCase):
 
         recipe3 = create_recipe(user=self.user, title='Fish and Chips')
 
-        params = {'tags': f'{tag1.id}, {tag2.id}'}
+        params = {'tags': f'{tag1.name},{tag2.name}'}
         res = self.client.get(RECIPES_URL, params)
 
         serializer1 = RecipeSerializer(recipe1)
@@ -436,7 +436,7 @@ class PrivatecRecipeAPITests(TestCase):
 
         recipe3 = create_recipe(user=self.user, title='Red Lentil Daal')
 
-        params = {'ingredients': f'{ingredient1.id}, {ingredient2.id}'}
+        params = {'ingredients': f'{ingredient1.name},{ingredient2.name}'}
         res = self.client.get(RECIPES_URL, params)
 
         serializer1 = RecipeSerializer(recipe1)
