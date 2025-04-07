@@ -425,7 +425,10 @@ class PrivatecRecipeAPITests(TestCase):
         recipe1 = create_recipe(user=self.user, title='Posh Beans on Toast')
         recipe2 = create_recipe(user=self.user, title='Chicken Cacciatore')
 
-        ingredient1 = Ingredient.objects.create(user=self.user, name='Feta Cheese')
+        ingredient1 = Ingredient.objects.create(
+            user=self.user,
+            name='Feta Cheese'
+        )
         ingredient2 = Ingredient.objects.create(user=self.user, name='Chicken')
 
         recipe1.ingredients.add(ingredient1)
